@@ -7,7 +7,7 @@ typedef struct usuario {
     char nome[200];
     char senha[200];
     int nivel_acesso;
-} usuario;	
+} usuario;
 
 // Estrutura para armazenar informações de alunos
 typedef struct aluno {
@@ -24,7 +24,7 @@ void vizualiza() {
     arq = fopen("Alunos.txt", "r");
     aluno a;
     rewind(arq);
-    
+
     while (fscanf(arq, "%s %s %s %s %s", a.nome, a.idade, a.matricula, a.curso, a.turno) != EOF) {
         printf("Nome: %s\n", a.nome);
         printf("Idade: %s\n", a.idade);
@@ -33,7 +33,7 @@ void vizualiza() {
         printf("Turno: %s\n", a.turno);
         printf("\n------------------------------------------\n");
     }
-    
+
     fclose(arq);
 }
 
@@ -42,7 +42,7 @@ void adiciona() {
     FILE *arq;
     arq = fopen("Alunos.txt", "a");
     aluno a;
-    
+
     printf("Digite o nome do aluno: \n:>");
     gets(a.nome);
     printf("Digite a idade do aluno: \n:>");
@@ -53,7 +53,7 @@ void adiciona() {
     gets(a.curso);
     printf("Digite o turno do aluno: \n:>");
     gets(a.turno);
-    
+
     fprintf(arq, "%s %s %s %s %s ", a.nome, a.idade, a.matricula, a.curso, a.turno);
     fclose(arq);
 }
@@ -66,18 +66,18 @@ void modifica() {
     FILE *arqtemp;
     arq = fopen("Alunos.txt", "r");
     arqtemp = fopen("ArqTemp.txt", "w");
-    
+
     if (arq == NULL || arqtemp == NULL) {
         printf("Erro ao abrir os arquivos.\n");
         return;
     }
-    
+
     char nomeBusca[200];
     int encontrado = 0;
-    
+
     printf("Digite o nome buscado ou digite \"sair\": \n:>");
     gets(nomeBusca);
-    
+
     while (fscanf(arq, "%s %s %s %s %s", a.nome, a.idade, a.matricula, a.curso, a.turno) != EOF) {
         if (strcmp(a.nome, nomeBusca) == 0) {
             printf("Digite o novo nome: \n:>");
@@ -96,10 +96,10 @@ void modifica() {
             fprintf(arqtemp, "%s %s %s %s %s\n", a.nome, a.idade, a.matricula, a.curso, a.turno);
         }
     }
-    
+
     fclose(arq);
     fclose(arqtemp);
-    
+
     if (encontrado == 0) {
         remove("ArqTemp.txt");
         printf("Aluno não encontrado.\n");
@@ -117,19 +117,19 @@ void exclui() {
     FILE *arqtemp;
     arq = fopen("Alunos.txt", "r");
     arqtemp = fopen("ArqTemp.txt", "w");
-    
+
     if (arq == NULL || arqtemp == NULL) {
         printf("Erro ao abrir os arquivos.\n");
         return;
     }
-    
+
     char nomeBusca[200];
     int encontrado = 0;
-    
+
     printf("Digite o nome buscado para excluí-lo: \n:>");
     fgets(nomeBusca, sizeof(nomeBusca), stdin);
-    nomeBusca[strcspn(nomeBusca, "\n")] = '\0'; 
-    
+    nomeBusca[strcspn(nomeBusca, "\n")] = '\0';
+
     while (fscanf(arq, "%s %s %s %s %s", a.nome, a.idade, a.matricula, a.curso, a.turno) != EOF) {
         if (strcmp(a.nome, nomeBusca) == 0) {
             printf("Nome: %s\n", a.nome);
@@ -141,7 +141,7 @@ void exclui() {
             printf("Deseja excluir este nome? (s/n) \n:>");
             char resposta[3];
             fgets(resposta, sizeof(resposta), stdin);
-            resposta[strcspn(resposta, "\n")] = '\0'; 
+            resposta[strcspn(resposta, "\n")] = '\0';
             if (strcmp(resposta, "s") == 0) {
                 encontrado = 1;
             } else {
@@ -151,16 +151,16 @@ void exclui() {
             fprintf(arqtemp, "%s %s %s %s %s\n", a.nome, a.idade, a.matricula, a.curso, a.turno);
         }
     }
-    
+
     fclose(arq);
     fclose(arqtemp);
-    
+
     if (encontrado) {
         remove("Alunos.txt");
         rename("ArqTemp.txt", "Alunos.txt");
         printf("Registro excluído com sucesso!\n");
     } else {
-        remove("ArqTemp.txt"); 
+        remove("ArqTemp.txt");
         printf("Nome não encontrado ou nenhum registro foi excluído.\n");
     }
 }
@@ -170,19 +170,19 @@ void consulta() {
     aluno a;
     FILE *arq;
     arq = fopen("Alunos.txt", "r");
-    
+
     if (arq == NULL) {
         printf("Arquivo de alunos não encontrado.\n");
         return;
     }
-    
+
     char nomeBusca[200];
     int encontrado = 0;
-    
+
     printf("Digite o nome buscado para consulta: \n:>");
     fgets(nomeBusca, sizeof(nomeBusca), stdin);
-    nomeBusca[strcspn(nomeBusca, "\n")] = '\0'; 
-    
+    nomeBusca[strcspn(nomeBusca, "\n")] = '\0';
+
     while (fscanf(arq, "%s %s %s %s %s", a.nome, a.idade, a.matricula, a.curso, a.turno) != EOF) {
         if (strcmp(a.nome, nomeBusca) == 0) {
             printf("Nome: %s\n", a.nome);
@@ -195,9 +195,9 @@ void consulta() {
             break;
         }
     }
-    
+
     fclose(arq);
-    
+
     if (!encontrado) {
         printf("Aluno não encontrado.\n");
     }
@@ -208,20 +208,20 @@ void cadastraUsuario() {
     usuario u;
     FILE *arq;
     arq = fopen("Usuarios.txt", "a");
-    
+
     if (arq == NULL) {
         printf("Erro ao abrir o arquivo de usuários.\n");
         return;
     }
 
     int nivel_acesso;
-    
+
     printf("Digite o nome do novo usuário: \n:>");
     gets(u.nome);
-    
+
     printf("Digite a senha do novo usuário: \n:>");
     gets(u.senha);
-    
+
     printf("Digite o nível de acesso do novo usuário (1 para administrador, 2 para usuário padrão): \n:>");
     scanf("%d", &nivel_acesso);
     getchar(); // Limpa o buffer de entrada
@@ -229,26 +229,46 @@ void cadastraUsuario() {
     u.nivel_acesso = nivel_acesso;
 
     fprintf(arq, "%s %s %d\n", u.nome, u.senha, u.nivel_acesso);
-    
+
     fclose(arq);
+}
+
+// Função para alocação de memória
+void alocar_memoria(){
+    aluno *p;
+    p = (aluno *)malloc(sizeof(aluno));
+
+    if (p == NULL)
+    {
+        printf("Erro de alocação de memória. Cancelando.");
+        exit(1);
+    }
+}
+
+//Função para liberar a memória
+void liberar_memoria(){
+
+    aluno *p;
+    free(p);
 }
 
 int main() {
     int entrada;
     setlocale(LC_ALL, "Portuguese");
+    alocar_memoria();
     FILE *arq;
     arq = fopen("Alunos.txt", "r");
-    
+
     if (arq == NULL) {
         fopen("Alunos.txt", "w");
     }
-    
+
     fclose(arq);
 
     // Verifica se o arquivo de usuários já existe
     FILE *arqUsuarios;
     arqUsuarios = fopen("Usuarios.txt", "r");
-    
+
     if (arqUsuarios == NULL) {
         // Se o arquivo não existe, cria-o e adiciona o usuário "admin"
         arqUsuarios = fopen("Usuarios.txt", "w");
@@ -290,7 +310,7 @@ int main() {
             gets(senhaUsuario);
 
             arqUsuarios = fopen("Usuarios.txt", "r");
-            
+
             if (arqUsuarios == NULL) {
                 printf("Arquivo de usuários não encontrado.\n");
                 printf("====================================================\n");
@@ -307,7 +327,7 @@ int main() {
                     break;
                 }
             }
-            
+
             fclose(arqUsuarios);
 
             if (!encontrou) {
@@ -319,24 +339,24 @@ int main() {
             printf("\n------------------------------------------\n");
             printf("\tALTERAÇÃO DE REGISTRO\n\n");
             printf("\tEscolha uma opção:\n");
-            
+
             printf("\n1. Adicionar registro");
             printf("\n2. Visualizar registro");
             printf("\n3. Modificar registro");
             printf("\n4. Excluir registro");
             printf("\n5. Consultar registro");
-            
+
             if (nivel_acesso == 1) {
-                
+
                 printf("\n6. Cadastrar novo usuário");
             }
-            
+
             printf("\n7. Sair\n");
-            
+
             printf("\n------------------------------------------\n=>");
             scanf("%i", &entrada);
             getchar();
-            
+
             switch (entrada) {
                 case 1:
                     adiciona();
@@ -363,16 +383,17 @@ int main() {
                 case 7:
                     if (remove("ArqTemp.txt") == 0) {
                         printf("Arquivo temporário removido.\n");
+                        liberar_memoria();
                     }
                     return 0;
                 default:
                     printf("Valor Inválido\n");
             }
-            
+
             if (entrada != 6) {
-                break; // Sai do loop interno se a opção não for "Cadastrar novo usuário"
+                break;
             }
-        } while (1); // Loop interno para cadastrar novo usuário
-    } while (1); // Loop principal
+        } while (1);
+    } while (1);
 }
 
